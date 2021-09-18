@@ -1,6 +1,7 @@
 import SignIn from "./onboarding/SignIn";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Landing from "./onboarding/Landing";
+import Onboard from "./onboarding/Onboard";
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
       </div>
       <Route exact path="/">
         <Landing />
+      </Route>
+      <Route exact path="/onboard">
+        <Onboard/>
       </Route>
     </Router>
   );
