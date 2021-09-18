@@ -2,6 +2,42 @@ version: 1
 image: runicos/base
 
 pipeline:
+  segment_input:
+    capability: RAW
+    outputs:
+      - type: u8
+        dimensions: [1, 384]
+  mask_input:
+    capability: RAW
+    outputs:
+      - type: u8
+        dimensions: [1, 384]
+  token_ids_input:
+    capability: RAW
+    outputs:
+      - type: u8
+        dimensions: [1, 384]
+  segment_cast:
+    proc-block: './byte_input_conversion'
+    inputs:
+      - segment_input
+    outputs:
+      - type: i32
+        dimensions: [1, 384]
+  mask_cast:
+    proc-block: './byte_input_conversion'
+    inputs:
+      - mask_input
+    outputs:
+      - type: i32
+        dimensions: [1, 384]
+  token_ids_cast:
+    proc-block: './byte_input_conversion'
+    inputs:
+      - token_ids_input
+    outputs:
+      - type: i32
+        dimensions: [1, 384]
   classify:
     model: './bert.tflite'
     inputs:

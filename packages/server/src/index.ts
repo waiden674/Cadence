@@ -40,16 +40,16 @@ passport.use(
             githubSocialId: profile.id,
           },
           create: {
-            email: profile.emails[0].value,
+            email: profile.emails?.[0]?.value,
             displayName: profile.displayName,
             username: profile.username,
             githubSocialId: profile.id,
-            bio: profile._json.bio || '',
-            photo: profile.photos[0].value,
+            bio: profile?._json?.bio || '',
+            photo: profile.photos?.[0]?.value || '',
           },
           update: {
             displayName: profile.displayName,
-            photo: profile.photos[0].value,
+            photo: profile.photos?.[0]?.value || '',
           },
         });
 
