@@ -1,74 +1,61 @@
 import { User } from '@prisma/client';
 import { Router } from 'express';
+import passport from 'passport';
+import { ensureAuthenticated, ensureGuest } from '../middleware/auth';
 import prisma from '../lib/prisma';
 
 const router = Router();
 
-router.get('/me', async (req, res) => {
+router.get('/me', ensureAuthenticated, async (req, res) => {
   res.json(req.user);
 });
 
-// router.post('/register', async (req, res) => {
-//   const data = req.body as User;
-//   const existingUser = await prisma.user.findUnique({
-//     where: { email: data.email },
-//   });
+router.get('/success', (req, res) => {
+  res.send(/* html */ `
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <title>Login Successful</title>
+    </head>
+    <body>
+      <h1>Authorized</h1>
+      <p>You can close this window now</p>
+      <script>
+        let originUrl = window.location.origin;
+        if (window.location.hostname === 'localhost') {
+          originUrl = 'http://localhost:3000'
+        }
+        window.opener.postMessage('success', originUrl);
+        window.close();
+      </script>
+    </body>
+  </html>
+  `);
+});
 
-//   if (existingUser) {
-//     return res.status(400).json({
-//       message: 'Account already exists',
-//     });
-//   }
+router.get('/github', ensureGuest, (req, res, next) => {
+  const scope = ['user:email', 'repo', 'read:user'];
 
-//   const user = await prisma.user.create({
-//     data: {
-//       name: data.name,
-//       email: data.email,
-//       password: await bcrypt.hash(data.password, 8),
-//       role: data.role,
-//     },
-//   });
+  passport.authenticate('github', {
+    scope,
+  })(req, res, next);
+});
 
-//   (req.session as any).auth ||= {};
-//   (req.session as any).auth.user = user.id;
-//   req.user = user;
+router.get(
+  '/github/callback',
+  (req, res, next) => {
+    passport.authenticate('github', {
+      failureRedirect: '/',
+    })(req, res, next);
+  },
+  (req, res) => {
+    res.redirect('/auth/success');
+  }
+);
 
-//   res.status(201).json({
-//     message: 'Registration successful',
-//   });
-// });
-
-// router.post('/login', async (req, res) => {
-//   const data = req.body as User;
-//   const user = await prisma.user.findUnique({
-//     where: { email: data.email },
-//   });
-//   if (!user) {
-//     return res.status(400).json({
-//       message: "Account doesn't exist",
-//     });
-//   }
-
-//   const passwordIsCorrect = await bcrypt.compare(data.password, user.password);
-//   if (!passwordIsCorrect) {
-//     return res.status(400).json({
-//       message: 'Username or password is incorrect',
-//     });
-//   }
-
-//   (req.session as any).auth ||= {};
-//   (req.session as any).auth.user = user.id;
-//   req.user = user;
-
-//   res.json({
-//     message: 'Login successful',
-//   });
-// });
-
-// router.post('/logout', async (req, res) => {
-//   (req.session as any).auth = {};
-//   req.user = null as any;
-//   res.end();
-// });
+router.post('/logout', (req, res) => {
+  req.logout();
+  res.json({ message: 'Logged out' });
+});
 
 export default router;

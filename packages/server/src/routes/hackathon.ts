@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import prisma from '../lib/prisma';
+import slugify from 'slugify';
 
 const router = Router();
 
@@ -31,6 +32,11 @@ router.post('/', async (req, res) => {
       organizerId: req.user.id,
       startingAt: data.startingAt,
       endingAt: data.endingAt,
+      slug: slugify(data.name, {
+        lower: true,
+        replacement: '-',
+        strict: true,
+      }),
     },
   });
 

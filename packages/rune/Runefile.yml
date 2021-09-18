@@ -1,0 +1,20 @@
+version: 1
+image: runicos/base
+
+pipeline:
+  classify:
+    model: './bert.tflite'
+    inputs:
+      - segment_cast
+      - mask_cast
+      - token_ids_cast
+    outputs:
+      - type: f32
+        dimensions: [1, 384]
+      - type: f32
+        dimensions: [1, 384]
+  serial:
+    out: serial
+    inputs:
+      - classify.0
+      - classify.1
