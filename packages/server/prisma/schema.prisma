@@ -10,6 +10,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum TaskStatus {
+  TO_DO
+  IN_PROGRESS
+  DONE
+}
+
 model User {
   id                  String      @id @default(uuid())
   firstName           String?
@@ -32,6 +38,8 @@ model User {
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   teams               Team[]
+  Task                Task?       @relation(fields: [taskId], references: [id])
+  taskId              String?
 }
 
 model Hackathon {
@@ -57,7 +65,8 @@ model Team {
   hackathonId   String
   participants  User[]
   inviteCode    String
-  projectName   String?
+  project       Project   @relation(fields: [projectId], references: [id])
+  projectId     String
   elevatorPitch String?
   // markdown string
   aboutProject  String?
@@ -65,4 +74,53 @@ model Team {
   links         String[]
   demoLink      String?
   images        String[]
+}
+
+model Project {
+  id          String      @id @default(uuid())
+  projectName String
+  brainstorm  BrainStorm?
+  Phases      Phase[]
+  Team        Team?
+  //not sure if we need timing
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model BrainStorm {
+  id        String   @id @default(uuid())
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId String
+  prompts   String[]
+  frontend  String[]
+  backend   String[]
+  database  String[]
+  //not sure if we need timing
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Phase {
+  id               String   @id @default(uuid())
+  phaseNum         Int
+  phaseName        String
+  phaseDescription String
+  project          Project  @relation(fields: [projectId], references: [id])
+  projectId        String
+  tasks            Task[]
+  //not sure if we need timing
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  assignees   User[]
+  description String
+  status      TaskStatus @default(TO_DO)
+  Phase       Phase      @relation(fields: [phaseId], references: [id])
+  phaseId     String
+  //not sure if we need timing
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }

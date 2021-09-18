@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Avenir;
+}
+
+.onboard-container{
+      margin: 4vh 4vw;
+      display: flex;
+      flex-direction: column;
+}
+
+.onboard-content{
+    width: 55vw;
+    align-self: center;
+    margin-top: 4vh;
+}
+
+.onboard-form{
+     display: flex;
+     flex-direction: column;
+}
+
+.onboard-title{
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.onboard-tag{
+    font-size: 20px;
+    margin-bottom: 2.5rem;
+}
+
+.onboard-label{
+    font-size: 18px;
+    font-weight: 800;
+    color: rgb(39, 39, 39);
+    margin-bottom: 1rem;
+}
+
+.onboard-bio-input{
+    resize: none;
+    margin-bottom: 2.5rem;
+    height: 25vh;
+    border: 3.5px solid rgb(163, 162, 162);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.tag-input-container{
+    display: flex;
+    flex-wrap: wrap;
+    border: 3.5px solid rgb(163, 162, 162);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.skill{
+    background-color:#4B4949;
+    display: flex;
+    align-items: center;
+    width:min-content;
+    padding: 0.3rem 0.5rem;
+    border-radius: 10px;
+    color: white;
+    margin: 0.2rem 0.2rem;
+}
+
+.skill p{
+    margin-right: 1rem;
+}
+
+.skill i{
+    transition: all 0.1s linear;
+}
+.skill i:hover{
+    cursor: pointer;
+    color: rgb(226, 226, 226);
+}
+
+.onboard-skills-input{
+    flex-basis: auto;
+    margin-left: 0.5rem;
+    margin-right: auto;
+    padding: 0;
+    -webkit-appearance: none;
+    border: none;
+    font-size: 20px;
+    align-self: center;
+
+}
+
+input:focus, textarea:focus, select:focus{
+        outline: none;
+    }
+
+.onboard-button{
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    width: 15%;
+    color: #4b4949;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: #C4C4C4;
+    transition: all 0.2s linear;
+    align-self: flex-end;
+    margin-top: 30%;
+    
+}
+
+.onboard-button:hover{
+  background: #a1a0a0;
+  color: #414040;
+
+}
