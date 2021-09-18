@@ -2,9 +2,11 @@ import React from 'react'
 import blob from "../assets/blob.svg";
 import {BiChevronLeftCircle, BiChevronRightCircle, BiChevronRight} from "react-icons/bi"
 import "./Home.css";
+import Timebar from '../components/Timebar';
 
 const Home = (props) => {
     return (
+        <>
        <div className="dash-main">
                 <h1 className="dash-welcome">Welcome {props.firstName}</h1>
                 <hr></hr>
@@ -66,6 +68,8 @@ const Home = (props) => {
                     <div className="current-phase"> <h3>Planning and Research</h3> <BiChevronRight/> </div>
                 </section>
             </div>
+            <Timebar />
+            </>
     )
 }
 
