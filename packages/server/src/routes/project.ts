@@ -1,3 +1,4 @@
+import { TaskStatus } from ".prisma/client";
 import { Router } from "express";
 import prisma from "../lib/prisma";
 
@@ -105,6 +106,18 @@ router.get('/:projectId/phase/:phaseId/task/:taskId', async (req, res) => {
         }
     });
     res.send(task)
+});
+
+router.put('/:projectId/phase/:phaseId/task/:taskId', async (req, res) => {
+    const data = req.body as {
+        status: TaskStatus
+    }
+    const task = await prisma.task.update({
+        where: { id: req.params.taskId },
+        data: { status: data.status }
+    });
+
+    res.json({ message: `Updated task ${req.params.taskId} with the status ${data.status}` })
 });
 
 export default router

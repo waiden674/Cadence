@@ -10,6 +10,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum TaskStatus {
+  TO_DO
+  IN_PROGRESS
+  DONE
+}
+
 model User {
   id                  String      @id @default(uuid())
   firstName           String
@@ -104,12 +110,13 @@ model Phase {
 }
 
 model Task {
-  id          String   @id @default(uuid())
+  id          String     @id @default(uuid())
   assignees   User[]
   description String
-  Phase       Phase    @relation(fields: [phaseId], references: [id])
+  status      TaskStatus @default(TO_DO)
+  Phase       Phase      @relation(fields: [phaseId], references: [id])
   phaseId     String
   //not sure if we need timing
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
