@@ -13,6 +13,7 @@
 .dash-main{
     padding: 10vh 6vw;
     overflow: scroll;
+    margin-left: 8vw;
 }
 
 .dash-welcome{
@@ -125,4 +126,25 @@
     border: none;
     background-color: #999DEA;
     margin-top: 1.5rem;
+}
+
+.phase-section{
+    width: 50vw;
+}
+
+.phase-section-header{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.current-phase{
+    display: flex;
+    color: #EFEFEF;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: #973F64;
+    border-radius: 10px;
+    margin-top: 1rem;
 }

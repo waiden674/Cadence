@@ -2,7 +2,7 @@ import React from 'react'
 import Sidebar from '../components/Sidebar'
 import "./Dashboard.css";
 import blob from "../assets/blob.svg";
-import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi"
+import {BiChevronLeftCircle, BiChevronRightCircle, BiChevronRight} from "react-icons/bi"
 
 // props= firstName
 const Dashboard = (props) => {
@@ -58,10 +58,16 @@ const Dashboard = (props) => {
                                 </div>
                                 <div className="task-team-icon">
                                 </div>
-                                
                             </div>
                         </div>
                     </section>
+                </section>
+                <section className="phase-section">
+                    <section className="phase-section-header">
+                        <h2 className="dash-header">Phase</h2>
+                        <button className="add-task-btn">View All</button>
+                    </section>
+                    <div className="current-phase"> <h3>Planning and Research</h3> <BiChevronRight/> </div>
                 </section>
             </div>
         </div>
