@@ -1,3 +1,4 @@
+import 'dotenv-flow/config';
 import express from 'express';
 import cors from 'cors';
 import routes from './routes';
@@ -23,7 +24,7 @@ app.use(
   })
 );
 app.use(express.json());
-
+console.log(process.env.GITHUB_CLIENT_ID);
 passport.use(
   new GithubStrategy(
     {
