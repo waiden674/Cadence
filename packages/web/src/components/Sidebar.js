@@ -15,9 +15,9 @@ const Sidebar = (props) => {
                <div className="icon-container" id={tab === "home"? "active": null} onClick = {() => setTab("home")}> <i id="home"><CgHome size={25}/></i></div>
                <div className="icon-container" id={tab === "chat"? "active": null} onClick = {() => setTab("chat")}><i id="chat"> <RiMessage3Fill size={25}/></i></div> 
                <div className="icon-container" id={tab === "plan"? "active": null} onClick = {() => setTab("plan")}><i id="plan"> <BiCalendarEdit size={25}/></i></div> 
-                <div className="icon-container" id={tab === "brainstorm"? "active": null} onClick = {() => setTab("brainstorm")}><i id="brainstorm"> <BiBulb size={25}/></i></div>
+                <div className="icon-container" id={tab === "home"? "brainstorm": null} onClick = {() => setTab("brainstorm")}><i id="brainstorm"> <BiBulb size={25}/></i></div>
            </section>
-            <i id="settings" onClick = {() => setTab("settings")}><RiSettings3Line size={25}/></i>
+            <i id="settings"><RiSettings3Line size={25}/></i>
         </div>
     )
 }

@@ -23,7 +23,7 @@ function App() {
       <Route exact path="/onboard2">
         <Onboard2/>
       </Route>
-      <Route exact path="/dash">
+      <Route exact path="/dash-home">
         <Dashboard/>
       </Route>
       
