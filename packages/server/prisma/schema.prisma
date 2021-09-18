@@ -33,6 +33,8 @@ model User {
 model Hackathon {
   id          String   @id @default(uuid())
   name        String
+  // slugified version of name
+  slug        String   @unique
   // in usd
   prizes      Int
   organizer   User     @relation("HackathonOrganized", fields: [organizerId], references: [id])
