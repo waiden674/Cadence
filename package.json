@@ -1,0 +1,14 @@
+{
+  "name": "hack-the-north",
+  "version": "1.0.0",
+  "private": true,
+  "repository": "https://github.com/waiden674/HackTheNorth2021.git",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "server": "yarn workspace server dev",
+    "web": "yarn workspace web start"
+  }
+}
