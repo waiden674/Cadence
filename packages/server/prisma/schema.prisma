@@ -9,3 +9,54 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model User {
+  id                  String      @id @default(uuid())
+  firstName           String
+  lastName            String
+  username            String
+  bio                 String
+  photo               String
+  skills              String[]
+  hackathonsOrganized Hackathon[] @relation("HackathonOrganized")
+  // hackathonsParticipated Hackathon[] @relation("HackathonParticipated")
+  interests           String[]
+  github              String?
+  twitter             String?
+  website             String?
+  linkedin            String?
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  teams               Team[]
+}
+
+model Hackathon {
+  id          String   @id @default(uuid())
+  name        String
+  // in usd
+  prizes      Int
+  organizer   User     @relation("HackathonOrganized", fields: [organizerId], references: [id])
+  organizerId String
+  // hackers     User[]   @relation("HackathonParticipated", fields: [organizerId], references: [id])
+  startingAt  DateTime
+  endingAt    DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  teams       Team[]
+}
+
+model Team {
+  id            String    @id @default(uuid())
+  hackathon     Hackathon @relation(fields: [hackathonId], references: [id])
+  hackathonId   String
+  participants  User[]
+  inviteCode    String
+  projectName   String?
+  elevatorPitch String?
+  // markdown string
+  aboutProject  String?
+  builtWith     String[]
+  links         String[]
+  demoLink      String?
+  images        String[]
+}
