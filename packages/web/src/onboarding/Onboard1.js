@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
+import { Link } from "react-router-dom";
 import { AiFillCloseCircle } from "react-icons/ai";
-import "./Onboard.css";
+import "./Onboard1.css";
 
 
 {/*Props: firstName */}
@@ -56,7 +57,7 @@ const Onboard = (props) => {
                     })}
                     <input type="text" className="onboard-skills-input" onKeyUp={newSkill}></input>
                 </div>
-                <button className="onboard-button" >Done</button>
+               <Link to="/onboard2"> <button className="onboard-button" >Next</button></Link>
             </div>
 </section>
         </div>

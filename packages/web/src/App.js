@@ -1,7 +1,8 @@
 import SignIn from "./onboarding/SignIn";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Landing from "./onboarding/Landing";
-import Onboard from "./onboarding/Onboard";
+import Onboard1 from "./onboarding/Onboard1";
+import Onboard2 from "./onboarding/Onboard2";
 
 function App() {
   return (
@@ -14,8 +15,11 @@ function App() {
       <Route exact path="/">
         <Landing />
       </Route>
-      <Route exact path="/onboard">
-        <Onboard/>
+      <Route exact path="/onboard1">
+        <Onboard1/>
+      </Route>
+      <Route exact path="/onboard2">
+        <Onboard2/>
       </Route>
     </Router>
   );

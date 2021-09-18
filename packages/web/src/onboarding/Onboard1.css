@@ -14,7 +14,7 @@
 .onboard-content{
     width: 55vw;
     align-self: center;
-    margin-top: 7vh;
+    margin-top: 4vh;
 }
 
 .onboard-form{
@@ -51,6 +51,7 @@
 
 .tag-input-container{
     display: flex;
+    flex-wrap: wrap;
     border: 3.5px solid rgb(163, 162, 162);
     border-radius: 8px;
     padding: 0.5rem;
@@ -62,9 +63,9 @@
     align-items: center;
     width:min-content;
     padding: 0.3rem 0.5rem;
-    border-radius: 8px;
+    border-radius: 10px;
     color: white;
-    margin: 0 0.2rem;
+    margin: 0.2rem 0.2rem;
 }
 
 .skill p{
@@ -80,13 +81,13 @@
 }
 
 .onboard-skills-input{
-    height: 130%;
-    width: 100%;
+    flex-basis: auto;
     margin-left: 0.5rem;
+    margin-right: auto;
     padding: 0;
     -webkit-appearance: none;
     border: none;
-    font-size: 18px;
+    font-size: 20px;
     align-self: center;
 
 }
@@ -109,7 +110,8 @@ input:focus, textarea:focus, select:focus{
     background-color: #C4C4C4;
     transition: all 0.2s linear;
     align-self: flex-end;
-    margin-top: 5%;
+    margin-top: 30%;
+    
 }
 
 .onboard-button:hover{
