@@ -3,12 +3,14 @@ import Sidebar from '../components/Sidebar'
 import "./Dashboard.css";
 import blob from "../assets/blob.svg";
 import {BiChevronLeftCircle, BiChevronRightCircle, BiChevronRight} from "react-icons/bi"
+import Timebar from '../components/Timebar';
 
 // props= firstName
 const Dashboard = (props) => {
     return (
         <div className="dashboard-container">
             <Sidebar />
+            <Timebar />
             <div className="dash-main">
                 <h1 className="dash-welcome">Welcome {props.firstName}</h1>
                 <hr></hr>
