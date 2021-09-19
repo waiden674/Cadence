@@ -14,6 +14,7 @@
     justify-content: space-around;
     align-items: center;
     color: #A6A6A6;
+    position: fixed;
 }
 
 .menu-center{
