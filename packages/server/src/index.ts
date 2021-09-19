@@ -34,8 +34,6 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log(profile);
-
         const userProfile = await prisma.user.upsert({
           where: {
             githubSocialId: profile.id,
