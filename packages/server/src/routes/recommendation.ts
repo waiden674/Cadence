@@ -71,7 +71,7 @@ router.post('/', async (req, res) => {
   ]);
 
   const result = await execPromisify(
-    `rune run bert.rune --raw ${segmentFile} ${maskFile} ${tokenizedFile}`
+    `rune run ../rune/bert.rune --raw ${segmentFile} ${maskFile} ${tokenizedFile}`
   );
   const json = result.stdout.split('SERIAL: ')[1];
   const modelResults = JSON.parse(json);
