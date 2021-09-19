@@ -3,6 +3,14 @@ import blob from "../assets/blob.svg";
 import {BiChevronLeftCircle, BiChevronRightCircle, BiChevronRight} from "react-icons/bi"
 import "./Home.css";
 import Timebar from '../components/Timebar';
+import pfp1 from "../assets/pfp1.jpeg";
+import pfp2 from "../assets/pfp2.jpeg";
+import pfp3 from "../assets/pfp3.jpeg";
+import pfp4 from "../assets/pfp4.jpeg";
+import pfp5 from "../assets/pfp5.jpeg";
+import pfp6 from "../assets/pfp6.jpeg";
+
+
 
 const Home = (props) => {
     return (
@@ -14,9 +22,9 @@ const Home = (props) => {
                     <h2 className="dash-header">Team</h2>
                     <section className="team-lineup">
                         <button className="add-member-btn"><img src={blob} className="blob"></img></button>
-                        <div className="team-member-icon"></div>
-                        <div className="team-member-icon"></div>
-                        <div className="team-member-icon"></div>
+                        <img src={pfp1} className="team-member-icon"></img>
+                        <img src={pfp2} className="team-member-icon"></img>
+                        <img src={pfp3} className="team-member-icon"></img>
                     </section>
                 </section>
                 <section className="tasks-section">
@@ -35,14 +43,14 @@ const Home = (props) => {
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing...</p>
                             </div>
                             <div className="task-team">
-                                <div className="task-team-icon">
-                                </div>
-                                <div className="task-team-icon">
-                                </div>
-                                <div className="task-team-icon">
-                                </div>
-                                <div className="task-team-icon">
-                                </div>
+                                <img src={pfp1} className="task-team-icon">
+                                </img>
+                                <img src={pfp3} className="task-team-icon">
+                                </img>
+                                <img src={pfp6} className="task-team-icon">
+                                </img>
+                                <img src={pfp4} className="task-team-icon">
+                                </img>
                             </div>
                         </div>
 
@@ -52,10 +60,10 @@ const Home = (props) => {
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing...</p>
                             </div>
                             <div className="task-team">
-                                <div className="task-team-icon">
-                                </div>
-                                <div className="task-team-icon">
-                                </div>
+                                <img src={pfp2} className="task-team-icon">
+                                </img>
+                                <img src={pfp5} className="task-team-icon">
+                                </img>
                             </div>
                         </div>
                     </section>

@@ -70,11 +70,11 @@
 }
 
 .task-team-icon{
-    background: grey;
     height: 4vh;
     width: 4vh;
     border-radius: 100%;
     margin: 1rem 0.5rem 0 0;
+background-size: cover;
 }
 
 #tasks-section-header{
