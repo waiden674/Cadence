@@ -1,21 +1,9 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Textarea,
-  Stack,
-  Input,
-  InputRightElement,
-  InputGroup,
-  InputLeftElement,
-  Divider,
-  Avatar,
-} from '@chakra-ui/react';
-import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
+import { Box, Divider, Flex, Heading, Text } from '@chakra-ui/react';
 import Sidebar from '../../components/sidebar';
 import Timer from '../../components/timer';
 import { useUser } from '../../hooks/auth';
+import Link from 'next/link';
+import type { Phase as PrismaPhase, Task, User } from '@prisma/client';
 
 export default function Dashboard() {
   const { data } = useUser();
@@ -50,7 +38,7 @@ export default function Dashboard() {
             py="15px"
             fontSize="1.3rem"
           >
-            Add Phases
+            Add Phase
           </Box>
         </Box>
         <Box>
@@ -58,8 +46,8 @@ export default function Dashboard() {
             All Phases
           </Heading>
           <Flex direction="column" gridGap="20px">
-            {[1, 2].map((_, i) => (
-              <Phase key={i} />
+            {data.teams[0]?.project?.Phases?.map(phase => (
+              <Phase key={phase.id} phase={phase} />
             ))}
           </Flex>
         </Box>
@@ -69,42 +57,53 @@ export default function Dashboard() {
   );
 }
 
-function Phase() {
+function Phase({
+  phase,
+}: {
+  phase: PrismaPhase & {
+    tasks: (Task & {
+      assignees: User[];
+    })[];
+  };
+}) {
   return (
-    <Box
-      bgColor="#973F64"
-      px="35px"
-      py="25px"
-      rounded="12px"
-      maxW="600px"
-      color="#EFEFEF"
-    >
-      <Flex>
-        <Text
-          textDecoration="underline"
-          fontWeight="600"
-          fontSize="1.4rem"
-          color="#EFEFEF"
-          mb="10px"
-        >
-          Planning and Research
-        </Text>
-      </Flex>
-      <Box>
-        {[1, 2].map((_, i) => (
-          <Flex key={i} alignItems="center">
-            <Box
-              border="1.5px solid white"
-              height="18px"
-              width="18px"
-              rounded="50%"
-            />
-            <Text fontSize="1.3rem" ml="10px">
-              Create schedule
-            </Text>
-          </Flex>
-        ))}
+    <Link href={`/phases/${phase.id}`} passHref>
+      <Box
+        as="a"
+        bgColor="#973F64"
+        px="35px"
+        py="25px"
+        rounded="12px"
+        maxW="600px"
+        color="#EFEFEF"
+      >
+        <Flex>
+          <Text
+            textDecoration="underline"
+            fontWeight="600"
+            fontSize="1.4rem"
+            color="#EFEFEF"
+            mb="10px"
+          >
+            {phase.phaseName}
+          </Text>
+        </Flex>
+        <Box>
+          {phase.tasks.map((task, i) => (
+            <Flex key={i} alignItems="center">
+              <Box
+                border="1.5px solid white"
+                height="18px"
+                width="18px"
+                rounded="50%"
+              />
+              <Text fontSize="1.3rem" ml="10px">
+                {task.name}
+              </Text>
+            </Flex>
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </Link>
   );
 }

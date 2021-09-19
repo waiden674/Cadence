@@ -114,6 +114,7 @@ model Phase {
 
 model Task {
   id          String     @id @default(uuid())
+  name        String
   assignees   User[]
   description String
   status      TaskStatus @default(TO_DO)

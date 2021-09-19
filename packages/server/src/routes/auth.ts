@@ -7,7 +7,24 @@ import prisma from '../lib/prisma';
 const router = Router();
 
 router.get('/me', ensureAuthenticated, async (req, res) => {
-  res.json(req.user);
+  const user = await prisma.user.findUnique({
+    where: { id: (req.user as any).id },
+    include: {
+      teams: {
+        include: {
+          participants: true,
+          project: {
+            include: {
+              Phases: { include: { tasks: { include: { assignees: true } } } },
+              brainstorm: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  res.json(user);
 });
 
 router.get('/success', (req, res) => {

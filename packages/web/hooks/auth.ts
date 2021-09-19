@@ -2,15 +2,33 @@ import { useRouter } from 'next/router';
 import { useQuery, useQueryClient } from 'react-query';
 import { useToast } from '@chakra-ui/react';
 import api from '../lib/api';
-import type { User } from '@prisma/client';
+import type {
+  User,
+  Team,
+  Project,
+  Task,
+  Phase,
+  BrainStorm,
+} from '@prisma/client';
 import { useMemo } from 'react';
 
 export function useUser() {
-  const data = useQuery<User>('/auth/me', {
+  const data = useQuery<
+    User & {
+      teams: (Team & {
+        participants: User[];
+        project: Project & {
+          Phases: (Phase & {
+            tasks: (Task & {
+              assignees: User[];
+            })[];
+          })[];
+          brainstorm: BrainStorm;
+        };
+      })[];
+    }
+  >('/auth/me', {
     retry: false,
-    refetchOnWindowFocus: false,
-    // 10 mins
-    staleTime: 1000 * 60 * 10,
   });
 
   return data;

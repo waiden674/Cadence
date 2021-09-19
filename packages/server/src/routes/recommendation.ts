@@ -74,7 +74,7 @@ function getSoftwareType(type: string) {
 
 router.post('/', async (req, res) => {
   try {
-    const text = req.body.text;
+    const text = req.body.text as string;
 
     if (!text) {
       return res.status(400).send();
@@ -102,16 +102,18 @@ router.post('/', async (req, res) => {
     ]);
 
     const result = await execPromisify(
-      `rune run ../rune/bert.rune --raw ${segmentFile} ${maskFile} ${tokenizedFile}`
+      `rune run ../rune/bert3.rune --raw ${segmentFile} ${maskFile} ${tokenizedFile}`
     );
-    const json = result.stdout.split('SERIAL: ')[1];
+    const json = JSON.parse(
+      result.stderr.split('Serial: ')[1].replace('\n', '')
+    );
     // const modelResults = JSON.parse(json);
     console.log({ json });
     // console.log(modelResults);
 
     // TODO delete files after rune is finished running
     // TODO get keywords from logits that were returned from rune
-    const keywords: string[] = [];
+    const keywords: string[] = text.split(',').map(x => x.trim());
     const entities = [...keywords];
     let projectType: string;
 
@@ -160,7 +162,7 @@ router.post('/', async (req, res) => {
       recommendations.nodeModules = recommendations.nodeModules.slice(0, 9);
     }
 
-    res.send({ data: { recommendations, ideaMetadata } });
+    res.send({ data: { recommendations, ideaMetadata, rune: json } });
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: 'Something went wrong' });

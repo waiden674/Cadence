@@ -1,18 +1,4 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Textarea,
-  Stack,
-  Input,
-  InputRightElement,
-  InputGroup,
-  InputLeftElement,
-  Divider,
-  Avatar,
-} from '@chakra-ui/react';
-import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
+import { Avatar, Box, Divider, Flex, Heading, Text } from '@chakra-ui/react';
 import Sidebar from '../components/sidebar';
 import Timer from '../components/timer';
 import { useUser } from '../hooks/auth';
@@ -75,9 +61,9 @@ export default function Dashboard() {
                 />
               </svg>
             </Flex>
-            <Avatar height="85px" w="85px" src="/images/user1.png" />
-            <Avatar height="85px" w="85px" src="/images/user2.png" />
-            <Avatar height="85px" w="85px" src="/images/user3.png" />
+            {data.teams[0]?.participants?.map(p => (
+              <Avatar height="85px" w="85px" src={p.photo} key={p.id} />
+            ))}
           </Flex>
         </Box>
         <Box>
@@ -90,7 +76,30 @@ export default function Dashboard() {
             </Box>
           </Flex>
           <Flex gridGap="30px">
-            <Box width="50%">
+            {data.teams[0]?.project?.Phases?.map(phase => {
+              return phase?.tasks?.map(task => {
+                <Box width="50%">
+                  <Box
+                    bgColor="#F29277"
+                    color="#EFEFEF"
+                    py="30px"
+                    px="20px"
+                    borderRadius="15px"
+                  >
+                    <Text fontSize="1.3rem" fontWeight="400">
+                      {task?.name}
+                    </Text>
+                    <Text>{task?.description}</Text>
+                  </Box>
+                  <Flex mt="10px" gridGap="10px">
+                    {task?.assignees?.map(a => (
+                      <Avatar height="35px" w="35px" src={a.photo} key={a.id} />
+                    ))}
+                  </Flex>
+                </Box>;
+              });
+            })}
+            {/* <Box width="50%">
               <Box
                 bgColor="#D06C7F"
                 color="#EFEFEF"
@@ -108,26 +117,7 @@ export default function Dashboard() {
                 <Avatar height="35px" w="35px" src="/images/user2.png" />
                 <Avatar height="35px" w="35px" src="/images/user3.png" />
               </Flex>
-            </Box>
-            <Box width="50%">
-              <Box
-                bgColor="#F29277"
-                color="#EFEFEF"
-                py="30px"
-                px="20px"
-                borderRadius="15px"
-              >
-                <Text fontSize="1.3rem" fontWeight="400">
-                  Conduct user research
-                </Text>
-                <Text>Lorem ipsum dolor sit amet conse....</Text>
-              </Box>
-              <Flex mt="10px" gridGap="10px">
-                <Avatar height="35px" w="35px" src="/images/user1.png" />
-                <Avatar height="35px" w="35px" src="/images/user2.png" />
-                <Avatar height="35px" w="35px" src="/images/user3.png" />
-              </Flex>
-            </Box>
+            </Box> */}
           </Flex>
         </Box>
         <Box>
@@ -135,16 +125,24 @@ export default function Dashboard() {
             Phases
           </Heading>
           <Box>
-            <Box bgColor="#973F64" w="100%" px="40px" py="30px" rounded="15px">
-              <Heading
-                fontSize="1.6rem"
-                fontWeight="400"
-                as="h2"
-                color="#EFEFEF"
+            {data.teams[0]?.project?.Phases[0] && (
+              <Box
+                bgColor="#973F64"
+                w="100%"
+                px="40px"
+                py="30px"
+                rounded="15px"
               >
-                Planning and Research
-              </Heading>
-            </Box>
+                <Heading
+                  fontSize="1.6rem"
+                  fontWeight="400"
+                  as="h2"
+                  color="#EFEFEF"
+                >
+                  {data.teams[0]?.project?.Phases[0].phaseName}
+                </Heading>
+              </Box>
+            )}
           </Box>
         </Box>
       </Flex>
