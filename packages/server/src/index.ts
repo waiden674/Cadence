@@ -24,7 +24,7 @@ app.use(
   })
 );
 app.use(express.json());
-console.log(process.env.GITHUB_CLIENT_ID);
+
 passport.use(
   new GithubStrategy(
     {

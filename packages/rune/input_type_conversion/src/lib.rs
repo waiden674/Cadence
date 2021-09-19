@@ -2,40 +2,44 @@
 
 extern crate alloc;
 
-#[cfg(test)]
-#[macro_use]
-extern crate std;
+// #[cfg(test)]
+// #[macro_use]
+// extern crate std;
 
+use alloc::{string::String, vec::Vec};
+use core::str;
 pub use hotg_rune_core::{HasOutputs, Tensor};
 use hotg_rune_proc_blocks::{ProcBlock, Transform};
 
-// TODO: Add Generics
-
 #[derive(Debug, Clone, PartialEq, ProcBlock)]
 #[transform(input = [u8; _], output = [i32; _])]
-pub struct InputTypeConversion {}
+pub struct ByteInputConversion {}
 
-impl InputTypeConversion {
+impl ByteInputConversion {
     pub const fn new() -> Self {
-        InputTypeConversion {}
+        ByteInputConversion {}
     }
 }
 
-impl Default for InputTypeConversion {
+impl Default for ByteInputConversion {
     fn default() -> Self {
-        InputTypeConversion::new()
+        ByteInputConversion::new()
     }
 }
 
-impl Transform<Tensor<u8>> for InputTypeConversion {
+impl Transform<Tensor<u8>> for ByteInputConversion {
     type Output = Tensor<i32>;
 
     fn transform(&mut self, input: Tensor<u8>) -> Self::Output {
-        input.map(|_dims, &value| value as i32)
+        let json = str::from_utf8(input.elements()).expect("Error parsing file");
+        let (deserialized, _bytes_read) =
+            serde_json_core::from_str::<Vec<i32>>(json).expect("Error deserializing json");
+
+        Tensor::new_vector(deserialized)
     }
 }
 
-impl HasOutputs for InputTypeConversion {
+impl HasOutputs for ByteInputConversion {
     fn set_output_dimensions(&mut self, dimensions: &[usize]) {
         assert_eq!(
             dimensions.len(),
