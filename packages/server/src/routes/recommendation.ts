@@ -43,42 +43,47 @@ function tokenize(sentence: string) {
 }
 
 router.post('/', async (req, res) => {
-  const text = req.body.text;
+  try {
+    const text = req.body.text;
 
-  if (!text) {
-    return res.status(400).send();
+    if (!text) {
+      return res.status(400).send();
+    }
+
+    const tokenized = await tokenize(text);
+    const randomFileHash = uuid();
+
+    const tokenizedFile = `${randomFileHash}-1.ignore.json`;
+    const maskFile = `${randomFileHash}-2.ignore.json`;
+    const segmentFile = `${randomFileHash}-3.ignore.json`;
+
+    await Promise.all([
+      fs.writeFile(tokenizedFile, JSON.stringify(tokenized.getIds()), 'utf8'),
+      fs.writeFile(
+        maskFile,
+        JSON.stringify(tokenized.getSpecialTokensMask()),
+        'utf8'
+      ),
+      fs.writeFile(
+        segmentFile,
+        JSON.stringify(tokenized.getSequenceIds()),
+        'utf8'
+      ),
+    ]);
+
+    const result = await execPromisify(
+      `rune run ../rune/bert.rune --raw ${segmentFile} ${maskFile} ${tokenizedFile}`
+    );
+    const json = result.stdout.split('SERIAL: ')[1];
+    const modelResults = JSON.parse(json);
+
+    console.log(modelResults);
+
+    res.send('works');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Something went wrong' });
   }
-
-  const tokenized = await tokenize(text);
-  const randomFileHash = uuid();
-
-  const tokenizedFile = `${randomFileHash}-1.ignore.json`;
-  const maskFile = `${randomFileHash}-2.ignore.json`;
-  const segmentFile = `${randomFileHash}-3.ignore.json`;
-
-  await Promise.all([
-    fs.writeFile(tokenizedFile, JSON.stringify(tokenized.getIds()), 'utf8'),
-    fs.writeFile(
-      maskFile,
-      JSON.stringify(tokenized.getSpecialTokensMask()),
-      'utf8'
-    ),
-    fs.writeFile(
-      segmentFile,
-      JSON.stringify(tokenized.getSequenceIds()),
-      'utf8'
-    ),
-  ]);
-
-  const result = await execPromisify(
-    `rune run ../rune/bert.rune --raw ${segmentFile} ${maskFile} ${tokenizedFile}`
-  );
-  const json = result.stdout.split('SERIAL: ')[1];
-  const modelResults = JSON.parse(json);
-
-  console.log(modelResults);
-
-  res.send('works');
 });
 
 export default router;

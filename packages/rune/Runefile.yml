@@ -6,52 +6,49 @@ pipeline:
     capability: RAW
     outputs:
       - type: u8
-        dimensions: [1, 382]
+        dimensions: [1, 384]
   mask_input:
     capability: RAW
     outputs:
       - type: u8
-        dimensions: [1, 382]
+        dimensions: [1, 384]
   token_ids_input:
     capability: RAW
     outputs:
       - type: u8
-        dimensions: [1, 382]
+        dimensions: [1, 384]
   segment_cast:
     proc-block: './byte_input_conversion'
     inputs:
       - segment_input
     outputs:
       - type: i32
-        dimensions: [1, 382]
+        dimensions: [1, 384]
   mask_cast:
     proc-block: './byte_input_conversion'
     inputs:
       - mask_input
     outputs:
       - type: i32
-        dimensions: [1, 382]
+        dimensions: [1, 384]
   token_ids_cast:
     proc-block: './byte_input_conversion'
     inputs:
       - token_ids_input
     outputs:
       - type: i32
-        dimensions: [1, 382]
+        dimensions: [1, 384]
   classify:
     model: './bert.tflite'
     inputs:
-      # - extract_tokens.0
-      # - extract_tokens.1
-      # - extract_tokens.2
       - segment_cast
       - mask_cast
       - token_ids_cast
     outputs:
       - type: f32
-        dimensions: [1, 382]
+        dimensions: [1, 384]
       - type: f32
-        dimensions: [1, 382]
+        dimensions: [1, 384]
   serial:
     out: serial
     inputs:
