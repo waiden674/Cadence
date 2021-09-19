@@ -14,7 +14,7 @@
     margin-left: 3rem;
 }
 
-.plan-content hr{
+.title-underline{
     border: none;
     background: #999DEA;
     height: 3px;
@@ -25,6 +25,7 @@
     color: #EFEFEF;
     font-size: 25px;
     font-weight: heavy;
+    margin-bottom: 1rem;
 }
 
 .plan-btn{
@@ -41,7 +42,9 @@
     justify-content: space-between;
     font-size: 16px;
     cursor: pointer;
-    transition: all 0.2s linear
+    transition: all 0.2s linear;
+    margin-top: 2.5rem;
+    
 }
 
 .plan-btn:hover{
@@ -49,6 +52,9 @@
 }
 
 .add-options{
+    position: absolute;
+    top: 20vh;
+    left: 21vw;
     width: 14vw;
     height: 15vh;
     background: #141414;
@@ -56,23 +62,82 @@
     font-size: 16px;
     font-weight: 400;
     color: #EFEFEF;
-    padding: 1rem 0;
     display: flex;
     flex-direction: column;
     align-content: space-around
 }
 
 .option{
-    margin-left: 1rem;
-    margin-bottom: 1rem;
-    width: 80%;
+    /* margin-left: 1rem; */
+    /* margin-bottom: 1rem; */
+    width: 100%;
+    height: 50%;
+    user-select: none;
+    cursor: pointer;
+    padding: 0.2rem 1rem;   
+}
+
+#task-option{
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+#phase-option{
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding-top: 1rem;
+}
+
+.option:hover{
+    background-color: #252525;
 }
 
 .option-line{
-    width: 3vw;
-    height: 2px;
+    width: 3rem;
+    height: 1px;
+    background-color: #999DEA;
+    border: none;
     margin-left: 1rem;
-    
 }
 
+.phases-section{
+    margin-top: 4rem;
+}
 
+.phase{
+    font-size: 18px;
+    color: #EFEFEF;
+    margin-bottom: 1rem;
+    width: 80%;
+    padding: 1.5rem 1rem;
+    border-radius: 10px;
+}
+
+.phase-header{
+    display: flex;
+    align-items: center;
+}
+
+.phase h3{
+    text-decoration: underline;
+    margin-left: 1rem;
+}
+
+.phase ul{
+    margin-left: 3rem;
+    margin-top: 0.5rem;
+}
+
+.phase ul li{
+    font-size: 16px;
+}
+
+#phase-1{
+    background: #973F64;
+}
+
+#phase-2{
+    background: #6B67CA;
+}
