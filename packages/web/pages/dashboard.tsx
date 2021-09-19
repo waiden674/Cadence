@@ -78,25 +78,32 @@ export default function Dashboard() {
           <Flex gridGap="30px">
             {data.teams[0]?.project?.Phases?.map(phase => {
               return phase?.tasks?.map(task => {
-                return <Box width="50%">
-                  <Box
-                    bgColor="#F29277"
-                    color="#EFEFEF"
-                    py="30px"
-                    px="20px"
-                    borderRadius="15px"
-                  >
-                    <Text fontSize="1.3rem" fontWeight="400">
-                      {task?.name}
-                    </Text>
-                    <Text>{task?.description}</Text>
+                return (
+                  <Box width="50%" key={task.id}>
+                    <Box
+                      bgColor="#F29277"
+                      color="#EFEFEF"
+                      py="30px"
+                      px="20px"
+                      borderRadius="15px"
+                    >
+                      <Text fontSize="1.3rem" fontWeight="400">
+                        {task?.name}
+                      </Text>
+                      <Text>{task?.description}</Text>
+                    </Box>
+                    <Flex mt="10px" gridGap="10px">
+                      {task?.assignees?.map(a => (
+                        <Avatar
+                          height="35px"
+                          w="35px"
+                          src={a.photo}
+                          key={a.id}
+                        />
+                      ))}
+                    </Flex>
                   </Box>
-                  <Flex mt="10px" gridGap="10px">
-                    {task?.assignees?.map(a => (
-                      <Avatar height="35px" w="35px" src={a.photo} key={a.id} />
-                    ))}
-                  </Flex>
-                </Box>;
+                );
               });
             })}
             {/* <Box width="50%">

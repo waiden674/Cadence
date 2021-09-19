@@ -66,7 +66,7 @@ export default function Recommendations() {
             px="30px"
             fontSize="1.3rem"
             onClick={async () => {
-              const { data } = await axios.post('https://5000.code.mokshitjain.co/recommendations', {
+              const { data } = await axios.post('/recommendations', {
                 text: value,
               });
               const { recommendations, ideaMetadata, rune } = data;
