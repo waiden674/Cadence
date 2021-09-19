@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useUser } from '../hooks/auth';
+import axios from 'axios';
 import api from '../lib/api';
 
 export default function Recommendations() {
@@ -18,8 +19,6 @@ export default function Recommendations() {
   const [submitted, setSubmitted] = useState(false);
   const { data } = useUser();
   const [value, setValue] = useState('');
-
-  if (!data) return null;
 
   return (
     <Flex
@@ -29,10 +28,10 @@ export default function Recommendations() {
       justifyContent="center"
       bgColor="#2E2E2E"
     >
-      <Stack direction="column" spacing="40px" p={8} width="100%" maxW="800px">
+      <Stack direction="column" spacing="40px" p={8} width="100%" maxW="900px">
         <Box my={2}>
           <Heading fontSize="3rem" color="#B1AEAE" fontWeight="500" mb="10px">
-            Hello {data?.username}!
+            Hello {data?.username || 'Mokshit06'}!
           </Heading>
           <Text fontSize="1.7rem" color="#EFEFEF">
             Describe your project idea here
@@ -67,19 +66,22 @@ export default function Recommendations() {
             px="30px"
             fontSize="1.3rem"
             onClick={async () => {
-              const { data } = await api.post('/recommendations', {
+              const { data } = await axios.post('https://5000.code.mokshitjain.co/recommendations', {
                 text: value,
               });
               const { recommendations, ideaMetadata, rune } = data;
               setVal(data);
+              setSubmitted(true);
             }}
           >
             Get Recommendations
           </Box>
         </Flex>
         {submitted && (
-          <Box>
-            <pre>{JSON.stringify(val, null, 2)}</pre>
+          <Box px="20px" py="20px" rounded="10px" border="2px solid #EFEFEF">
+            <pre style={{ color: '#B1AEAE' }}>
+              {JSON.stringify(val, null, 2)}
+            </pre>
           </Box>
         )}
       </Stack>

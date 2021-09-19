@@ -78,7 +78,7 @@ export default function Dashboard() {
           <Flex gridGap="30px">
             {data.teams[0]?.project?.Phases?.map(phase => {
               return phase?.tasks?.map(task => {
-                <Box width="50%">
+                return <Box width="50%">
                   <Box
                     bgColor="#F29277"
                     color="#EFEFEF"
