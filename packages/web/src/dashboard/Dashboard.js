@@ -1,70 +1,37 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar'
+import React, {useState} from 'react'
 import "./Dashboard.css";
-import blob from "../assets/blob.svg";
-import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi"
+import Home from './Home';
+import Messages from './Messages';
+import { CgMenuLeft, CgHome } from "react-icons/cg";
+import { RiMessage3Fill, RiSettings3Line } from "react-icons/ri";
+import {BiCalendarEdit, BiBulb} from "react-icons/bi";
+import "../components/Sidebar.css";
 
 // props= firstName
 const Dashboard = (props) => {
-    return (
-        <div className="dashboard-container">
-            <Sidebar />
-            <div className="dash-main">
-                <h1 className="dash-welcome">Welcome {props.firstName}</h1>
-                <hr></hr>
-                <section className="team-section">
-                    <h2 className="dash-header">Team</h2>
-                    <section className="team-lineup">
-                        <button className="add-member-btn"><img src={blob} className="blob"></img></button>
-                        <div className="team-member-icon"></div>
-                        <div className="team-member-icon"></div>
-                        <div className="team-member-icon"></div>
-                    </section>
-                </section>
-                <section className="tasks-section">
-                    <section id="tasks-section-header">
-                        <h2 className="dash-header" id="tasks">Tasks</h2>
-                        <section className="btn-group">
-                        <button className="add-task-btn">Add Task</button>
-                        <i><BiChevronLeftCircle size={30}/></i>
-                        <i><BiChevronRightCircle size={30}/></i>
-                        </section>
-                    </section>
-                    <section className="tasks-lineup">
-                        <div className="task-group">
-                            <div className="task">
-                                <h3>Create Schedule</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing...</p>
-                            </div>
-                            <div className="task-team">
-                                <div className="task-team-icon">
-                                </div>
-                                <div className="task-team-icon">
-                                </div>
-                                <div className="task-team-icon">
-                                </div>
-                                <div className="task-team-icon">
-                                </div>
-                            </div>
-                        </div>
+    const [tab, setTab] = useState("home");
 
-                        <div className="task-group">
-                            <div className="task">
-                                <h3>Conduct User Research</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing...</p>
-                            </div>
-                            <div className="task-team">
-                                <div className="task-team-icon">
-                                </div>
-                                <div className="task-team-icon">
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </section>
-                </section>
-            </div>
+    return (
+        <>
+         <div className="sidebar-container">
+            <i id="menu"><CgMenuLeft size={20}/></i>
+            <section className="menu-center">
+               <div className="icon-container" id={tab === "home"? "active": null} onClick = {() => setTab("home")}> <i id="home"><CgHome size={25}/></i></div>
+               <div className="icon-container" id={tab === "chat"? "active": null} onClick = {() => setTab("chat")}><i id="chat"> <RiMessage3Fill size={25}/></i></div> 
+               <div className="icon-container" id={tab === "plan"? "active": null} onClick = {() => setTab("plan")}><i id="plan"> <BiCalendarEdit size={25}/></i></div> 
+                <div className="icon-container" id={tab === "brainstorm"? "active": null} onClick = {() => setTab("brainstorm")}><i id="brainstorm"> <BiBulb size={25}/></i></div>
+           </section>
+            <i id="settings"><RiSettings3Line size={25}/></i>
         </div>
+
+
+        <div className="dashboard-container">
+            
+           {tab === "home"? <Home />: null}
+            {tab === "chat"? <Messages />: null}
+            {/* <Messages /> */}
+        </div>
+        </>
     )
 }
 
