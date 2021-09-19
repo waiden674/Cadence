@@ -6,6 +6,7 @@ import { CgMenuLeft, CgHome } from "react-icons/cg";
 import { RiMessage3Fill, RiSettings3Line } from "react-icons/ri";
 import {BiCalendarEdit, BiBulb} from "react-icons/bi";
 import "../components/Sidebar.css";
+import Plan from './Plan';
 
 // props= firstName
 const Dashboard = (props) => {
@@ -29,7 +30,7 @@ const Dashboard = (props) => {
             
            {tab === "home"? <Home />: null}
             {tab === "chat"? <Messages />: null}
-            {/* <Messages /> */}
+            {tab === "plan"? <Plan />: null}
         </div>
         </>
     )

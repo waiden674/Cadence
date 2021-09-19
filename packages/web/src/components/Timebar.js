@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {BiBell} from "react-icons/bi";
 import "./Timebar.css";
 import {BiCopy} from "react-icons/bi";
+import pfp from "../assets/pfp.jpeg";
 
 // props = time
 const Timebar = (props) => {
@@ -10,7 +11,7 @@ const Timebar = (props) => {
         <div className="timebar-container">
             <section className="row-1">
                 <BiBell size={30}/>
-                <div className="profile-pic"></div>
+                <img src={pfp} className="profile-pic"></img>
                 
             </section>
 
