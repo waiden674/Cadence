@@ -1,11 +1,13 @@
 import 'dotenv-flow/config';
-import express from 'express';
+import express, { NextFunction, Response, Request } from 'express';
 import cors from 'cors';
 import routes from './routes';
 import { User } from '@prisma/client';
 import passport from 'passport';
 import { Strategy as GithubStrategy } from 'passport-github2';
 import prisma from './lib/prisma';
+import expressSession from 'express-session';
+import pgSession from 'connect-pg-simple';
 
 const app = express();
 
@@ -24,6 +26,16 @@ app.use(
   })
 );
 app.use(express.json());
+
+const PgStore = pgSession(expressSession);
+const sessionMiddleware = expressSession({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false,
+  store: new PgStore(),
+});
+
+app.use(sessionMiddleware);
 
 passport.use(
   new GithubStrategy(
@@ -47,10 +59,13 @@ passport.use(
             githubSocialId: profile.id,
             bio: profile?._json?.bio || '',
             photo: profile.photos?.[0]?.value || '',
+            github: `https://github.com/${profile.username}`,
           },
           update: {
             displayName: profile.displayName,
             photo: profile.photos?.[0]?.value || '',
+            github: `https://github.com/${profile.username}`,
+            username: profile.username,
           },
         });
 
@@ -80,6 +95,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', routes);
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  err.statusCode = err.statusCode || 500;
+  err.message = err.message || 'Internal Server Error';
+
+  console.error(err);
+
+  res.status(500).json({ success: false, message: err.message });
+});
 
 const port = process.env.PORT || 5000;
 
