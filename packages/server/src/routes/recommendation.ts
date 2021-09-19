@@ -7,6 +7,7 @@ import { RawEncoding } from 'tokenizers/bindings/raw-encoding';
 import { Tokenizer } from 'tokenizers/bindings/tokenizer';
 import { promisify } from 'util';
 import { v4 as uuid } from 'uuid';
+import { getRecommendations } from '../lib/recommendation';
 
 const execPromisify = promisify(exec);
 
@@ -42,6 +43,35 @@ function tokenize(sentence: string) {
   });
 }
 
+const softwareType = [
+  'website',
+  'mobile app',
+  'app',
+  'web app',
+  'web-app',
+  'dashboard',
+  'platform',
+  'extension',
+];
+function getSoftwareType(type: string) {
+  const websiteIdentifiers = [
+    'dashboard',
+    'platform',
+    'web',
+    'web app',
+    'web-app',
+    'website',
+  ];
+  const appIdentifiers = ['mobile app', 'app'];
+  if (websiteIdentifiers.includes(type)) {
+    return 'website';
+  } else if (appIdentifiers.includes(type)) {
+    return 'app';
+  } else {
+    return type;
+  }
+}
+
 router.post('/', async (req, res) => {
   try {
     const text = req.body.text;
@@ -75,11 +105,62 @@ router.post('/', async (req, res) => {
       `rune run ../rune/bert.rune --raw ${segmentFile} ${maskFile} ${tokenizedFile}`
     );
     const json = result.stdout.split('SERIAL: ')[1];
-    const modelResults = JSON.parse(json);
+    // const modelResults = JSON.parse(json);
+    console.log({ json });
+    // console.log(modelResults);
 
-    console.log(modelResults);
+    // TODO delete files after rune is finished running
+    // TODO get keywords from logits that were returned from rune
+    const keywords: string[] = [];
+    const entities = [...keywords];
+    let projectType: string;
 
-    res.send('works');
+    for (const type of softwareType) {
+      if (!projectType) {
+        for (const phrase of keywords) {
+          if (phrase.toLowerCase().includes(type)) {
+            projectType = getSoftwareType(type);
+
+            if (phrase.length === type.length) {
+              entities.splice(entities.indexOf(phrase), 1);
+            } else {
+              entities[entities.indexOf(phrase)] = phrase
+                .replace(type, '')
+                .trim();
+            }
+
+            break;
+          }
+        }
+      }
+    }
+
+    const ideaMetadata = {
+      type: projectType,
+      entities: entities,
+    };
+
+    if (
+      ideaMetadata.type === undefined ||
+      ideaMetadata.entities[0] === undefined
+    ) {
+      return res.status(400).send({
+        message: 'Please specify type and functionality.',
+      });
+    }
+
+    const recommendations = await getRecommendations(ideaMetadata);
+    if (recommendations.publicAPIs.length > 9) {
+      recommendations.publicAPIs = recommendations.publicAPIs.slice(0, 9);
+    }
+    if (recommendations.relatedRepos.length > 9) {
+      recommendations.relatedRepos = recommendations.relatedRepos.slice(0, 9);
+    }
+    if (recommendations.nodeModules.length > 9) {
+      recommendations.nodeModules = recommendations.nodeModules.slice(0, 9);
+    }
+
+    res.send({ data: { recommendations, ideaMetadata } });
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: 'Something went wrong' });
