@@ -106,10 +106,14 @@ router.post('/', async (req, res) => {
     );
     const json = JSON.parse(
       result.stderr.split('Serial: ')[1].replace('\n', '')
-    );
-    // const modelResults = JSON.parse(json);
+    ) as Array<{
+      type_name: string;
+      channel: number;
+      elements: number[];
+      dimensions: [number, number];
+    }>;
+
     console.log({ json });
-    // console.log(modelResults);
 
     // TODO delete files after rune is finished running
     // TODO get keywords from logits that were returned from rune

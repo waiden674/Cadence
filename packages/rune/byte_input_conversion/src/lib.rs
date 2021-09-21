@@ -6,10 +6,14 @@ extern crate alloc;
 // #[macro_use]
 // extern crate std;
 
-use alloc::{string::String, vec::Vec};
+use alloc::{
+    string::String,
+    vec::{self, Vec},
+};
 use core::str;
 pub use hotg_rune_core::{HasOutputs, Tensor};
 use hotg_rune_proc_blocks::{ProcBlock, Transform};
+use log::info;
 
 #[derive(Debug, Clone, PartialEq, ProcBlock)]
 #[transform(input = [u8; _], output = [i32; _])]
@@ -33,9 +37,10 @@ impl Transform<Tensor<u8>> for ByteInputConversion {
     fn transform(&mut self, input: Tensor<u8>) -> Self::Output {
         let json = str::from_utf8(input.elements()).expect("Error parsing file");
         let (deserialized, _bytes_read) =
-            serde_json_core::from_str::<Vec<i32>>(json).expect("Error deserializing json");
+            serde_json_core::from_str::<Vec<i32>>(json.trim_end_matches(char::from(0)))
+                .expect("Error deserializing json");
 
-        Tensor::new_vector(deserialized)
+        Tensor::new_row_major(deserialized.into(), alloc::vec![1, 384])
     }
 }
 
