@@ -43,6 +43,18 @@ function tokenize(sentence: string) {
   });
 }
 
+function tensorWith384Elements(arr: number[]) {
+  for (let i = 0; i < 384; i++) {
+    if (arr[i]) {
+      continue;
+    }
+
+    arr[i] = 0;
+  }
+
+  return arr;
+}
+
 const softwareType = [
   'website',
   'mobile app',
@@ -53,6 +65,7 @@ const softwareType = [
   'platform',
   'extension',
 ];
+
 function getSoftwareType(type: string) {
   const websiteIdentifiers = [
     'dashboard',
@@ -88,15 +101,19 @@ router.post('/', async (req, res) => {
     const segmentFile = `${randomFileHash}-3.ignore.json`;
 
     await Promise.all([
-      fs.writeFile(tokenizedFile, JSON.stringify(tokenized.getIds()), 'utf8'),
+      fs.writeFile(
+        tokenizedFile,
+        JSON.stringify(tensorWith384Elements(tokenized.getIds())),
+        'utf8'
+      ),
       fs.writeFile(
         maskFile,
-        JSON.stringify(tokenized.getSpecialTokensMask()),
+        JSON.stringify(tensorWith384Elements(tokenized.getSpecialTokensMask())),
         'utf8'
       ),
       fs.writeFile(
         segmentFile,
-        JSON.stringify(tokenized.getSequenceIds()),
+        JSON.stringify(tensorWith384Elements(tokenized.getSequenceIds())),
         'utf8'
       ),
     ]);
@@ -150,8 +167,8 @@ router.post('/', async (req, res) => {
       ideaMetadata.type === undefined ||
       ideaMetadata.entities[0] === undefined
     ) {
-      return res.status(400).send({
-        message: 'Please specify type and functionality.',
+      return res.send({
+        data: { message: 'Please specify type and functionality.', rune: json },
       });
     }
 
@@ -159,17 +176,21 @@ router.post('/', async (req, res) => {
     if (recommendations.publicAPIs.length > 9) {
       recommendations.publicAPIs = recommendations.publicAPIs.slice(0, 9);
     }
-    if (recommendations.relatedRepos.length > 9) {
-      recommendations.relatedRepos = recommendations.relatedRepos.slice(0, 9);
+    if (recommendations.relatedRepos?.length > 9) {
+      recommendations.relatedRepos = recommendations.relatedRepos
+        .slice(0, 9)
+        .map(x => x.name);
     }
     if (recommendations.nodeModules.length > 9) {
-      recommendations.nodeModules = recommendations.nodeModules.slice(0, 9);
+      recommendations.nodeModules = recommendations.nodeModules
+        .slice(0, 9)
+        .map(x => x.package.name);
     }
 
     res.send({ data: { recommendations, ideaMetadata, rune: json } });
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: 'Something went wrong' });
+    res.send({ message: 'Something went wrong' });
   }
 });
 
